@@ -1,4 +1,3 @@
-// ui/task_detail/TaskDetailFragment.kt
 package com.example.taskmanager.ui.task_detail
 
 import android.app.DatePickerDialog
@@ -27,7 +26,7 @@ class TaskDetailFragment : Fragment() {
     private var _binding: FragmentTaskDetailBinding? = null
     private val binding get() = _binding!!
 
-
+    private val args: TaskDetailFragmentArgs by navArgs()
     private val viewModel: TaskDetailViewModel by viewModels {
         TaskDetailViewModelFactory((requireActivity().application as TaskApplication).repository)
     }
@@ -47,35 +46,31 @@ class TaskDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // ... your existing setup calls ...
         setupSpinners()
         setupDatePicker()
         setupButtons()
         observeViewModel()
 
-        // Read taskId from arguments (fallback to -1L for new task)
-        val taskId = arguments?.getLong("taskId") ?: -1L
+        // Fixed: get taskId from SafeArgs
+        val taskId = args.taskId
         viewModel.loadTask(taskId)
+
+
+
     }
 
     private fun setupSpinners() {
-        // Priority Spinner
-        val priorityAdapter = ArrayAdapter(
+        binding.spinnerPriority.adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
             Priority.values().map { it.displayName }
-        )
-        priorityAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerPriority.adapter = priorityAdapter
+        ).apply { setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
 
-        // Status Spinner
-        val statusAdapter = ArrayAdapter(
+        binding.spinnerStatus.adapter = ArrayAdapter(
             requireContext(),
             android.R.layout.simple_spinner_item,
             Status.values().map { it.displayName }
-        )
-        statusAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spinnerStatus.adapter = statusAdapter
+        ).apply { setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item) }
     }
 
     private fun setupDatePicker() {
@@ -105,13 +100,8 @@ class TaskDetailFragment : Fragment() {
     }
 
     private fun setupButtons() {
-        binding.btnSave.setOnClickListener {
-            saveTask()
-        }
-
-        binding.btnCancel.setOnClickListener {
-            findNavController().navigateUp()
-        }
+        binding.btnSave.setOnClickListener { saveTask() }
+        binding.btnCancel.setOnClickListener { findNavController().navigateUp() }
     }
 
     private fun saveTask() {
@@ -132,19 +122,19 @@ class TaskDetailFragment : Fragment() {
                 binding.spinnerPriority.setSelection(task.priority.ordinal)
                 binding.spinnerStatus.setSelection(task.status.ordinal)
 
-                selectedDueDate = task.dueDate as Date?
-                if (task.dueDate != null) {
-                    binding.tvDueDate.text = dateFormatter.format(task.dueDate)
+                selectedDueDate = task.dueDate?.let { Date(it) } // Convert Long -> Date
+                if (selectedDueDate != null) {
+                    binding.tvDueDate.text = dateFormatter.format(selectedDueDate!!)
                     binding.btnClearDueDate.visibility = View.VISIBLE
                 } else {
                     binding.tvDueDate.text = "No due date selected"
                     binding.btnClearDueDate.visibility = View.GONE
                 }
 
-                binding.toolbar.title = "Edit Task"
+                binding.taskListTV.text = "Edit Task"
             } else {
-                // Create mode
-                binding.toolbar.title = "New Task"
+                // New task
+                binding.taskListTV.text = "Add New Task"
                 binding.tvDueDate.text = "No due date selected"
                 binding.btnClearDueDate.visibility = View.GONE
             }

@@ -6,26 +6,10 @@
         android:id="@+id/action_search"
         android:icon="@android:drawable/ic_menu_search"
         android:title="Search"
+        android:iconTint="@color/white"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
         app:showAsAction="always|collapseActionView" />
 
-    <item
-        android:id="@+id/action_sort"
-        android:title="Sort by">
 
-        <menu>
-            <item
-                android:id="@+id/action_sort_date"
-                android:title="Date Created" />
-
-            <item
-                android:id="@+id/action_sort_priority"
-                android:title="Priority" />
-
-            <item
-                android:id="@+id/action_sort_due_date"
-                android:title="Due Date" />
-        </menu>
-    </item>
 
 </menu>

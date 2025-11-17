@@ -16,14 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.taskmanager.R
 import com.example.taskmanager.TaskApplication
 import com.example.taskmanager.data.model.Task
-import com.example.taskmanager.data.repository.TaskRepository
 import com.example.taskmanager.databinding.FragmentTaskListBinding
-
 
 class TaskListFragment : Fragment() {
 
-    private var _binding: FragmentTaskListBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var binding: FragmentTaskListBinding
 
     private val viewModel: TaskListViewModel by viewModels {
         TaskListViewModelFactory((requireActivity().application as TaskApplication).repository)
@@ -36,7 +33,7 @@ class TaskListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTaskListBinding.inflate(inflater, container, false)
+        binding = FragmentTaskListBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -65,9 +62,12 @@ class TaskListFragment : Fragment() {
         }
     }
 
+
     private fun setupFab() {
         binding.fabAddTask.setOnClickListener {
-            findNavController().navigate(R.id.action_taskListFragment_to_taskDetailFragment)
+            val action = TaskListFragmentDirections
+                .actionTaskListFragmentToTaskDetailFragment(-1)
+            findNavController().navigate(action)
         }
     }
 
@@ -75,41 +75,27 @@ class TaskListFragment : Fragment() {
         val menuHost: MenuHost = requireActivity()
 
         menuHost.addMenuProvider(object : MenuProvider {
+
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_task_list, menu)
 
                 val searchItem = menu.findItem(R.id.action_search)
                 val searchView = searchItem.actionView as SearchView
 
+                searchView.queryHint = "Search tasks..."
+
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean {
-                        return false
-                    }
+                    override fun onQueryTextSubmit(query: String?): Boolean = false
 
                     override fun onQueryTextChange(newText: String?): Boolean {
-                        viewModel.searchTasks(newText ?: "")
+                        viewModel.searchTasks(newText.orEmpty())
                         return true
                     }
                 })
             }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
-                return when (menuItem.itemId) {
-                    R.id.action_sort_date -> {
-                        viewModel.setSortType(TaskListViewModel.SortType.DATE)
-                        true
-                    }
-                    R.id.action_sort_priority -> {
-                        viewModel.setSortType(TaskListViewModel.SortType.PRIORITY)
-                        true
-                    }
-                    R.id.action_sort_due_date -> {
-                        viewModel.setSortType(TaskListViewModel.SortType.DUE_DATE)
-                        true
-                    }
-                    else -> false
-                }
-            }
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
+
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
@@ -128,15 +114,15 @@ class TaskListFragment : Fragment() {
 
         viewModel.navigateToTaskDetail.observe(viewLifecycleOwner) { taskId ->
             taskId?.let {
-                findNavController().navigate(R.id.action_taskListFragment_to_taskDetailFragment)
+                val action = TaskListFragmentDirections
+                    .actionTaskListFragmentToTaskDetailFragment(it)
+                findNavController().navigate(action)
                 viewModel.onNavigationComplete()
             }
         }
 
         viewModel.showDeleteConfirmation.observe(viewLifecycleOwner) { task ->
-            task?.let {
-                showDeleteConfirmationDialog(it)
-            }
+            task?.let { showDeleteConfirmationDialog(it) }
         }
     }
 
@@ -152,16 +138,12 @@ class TaskListFragment : Fragment() {
             }
             .show()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
 }
 
 class TaskListViewModelFactory(
     private val repository: com.example.taskmanager.data.repository.TaskRepository
 ) : ViewModelProvider.Factory {
+
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TaskListViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

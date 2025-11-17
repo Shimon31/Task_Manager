@@ -1,58 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.task_detail.TaskDetailFragment">
 
-    <!-- AppBar -->
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
-        android:layout_width="0dp"
+    <TextView
+        android:id="@+id/taskListTV"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:text="Add New Task"
+        android:textColor="@color/black"
+        android:textSize="30sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent" />
 
-        <com.google.android.material.appbar.MaterialToolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="#009688"
-            app:title="Task Details"
-            app:titleTextColor="@android:color/white"
-            app:navigationIcon="@drawable/outline_arrow_back_24" />
-    </com.google.android.material.appbar.AppBarLayout>
+    <ImageView
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:src="@drawable/outline_arrow_back_24"
+        app:layout_constraintBottom_toBottomOf="@id/taskListTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/taskListTV"
+        app:tint="@color/black" />
 
-    <!-- Scrollable Content -->
     <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        app:layout_constraintTop_toBottomOf="@id/appBarLayout"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/taskListTV">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:padding="16dp">
 
-            <!-- Title -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/titleInputLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:hint="Title *"
                 app:boxBackgroundMode="outline"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etTitle"
@@ -62,7 +64,6 @@
                     android:maxLines="1" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Description -->
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/descriptionInputLayout"
                 android:layout_width="0dp"
@@ -70,9 +71,9 @@
                 android:layout_marginTop="16dp"
                 android:hint="Description"
                 app:boxBackgroundMode="outline"
-                app:layout_constraintTop_toBottomOf="@id/titleInputLayout"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent">
+                app:layout_constraintTop_toBottomOf="@id/titleInputLayout">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/etDescription"
@@ -84,30 +85,27 @@
                     android:minLines="3" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!-- Priority Label -->
             <TextView
                 android:id="@+id/tvPriority"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:text="Priority"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                android:layout_marginTop="20dp"
-                app:layout_constraintTop_toBottomOf="@id/descriptionInputLayout"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/descriptionInputLayout" />
 
-            <!-- Priority Spinner -->
             <Spinner
                 android:id="@+id/spinnerPriority"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
                 android:minHeight="48dp"
-                app:layout_constraintTop_toBottomOf="@id/tvPriority"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/tvPriority" />
 
-            <!-- Status Label -->
             <TextView
                 android:id="@+id/tvStatus"
                 android:layout_width="wrap_content"
@@ -115,20 +113,18 @@
                 android:text="Status"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/spinnerPriority"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinnerPriority" />
 
-            <!-- Status Spinner -->
             <Spinner
                 android:id="@+id/spinnerStatus"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:minHeight="48dp"
-                app:layout_constraintTop_toBottomOf="@id/tvStatus"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/tvStatus" />
 
-            <!-- Due Date Label -->
             <TextView
                 android:id="@+id/tvDueDateLabel"
                 android:layout_width="wrap_content"
@@ -136,63 +132,59 @@
                 android:text="Due Date"
                 android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintTop_toBottomOf="@id/spinnerStatus"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/spinnerStatus" />
 
-            <!-- Select Due Date Button -->
             <Button
                 android:id="@+id/btnSelectDueDate"
+                style="@style/Widget.Material3.Button.OutlinedButton"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Select Due Date"
                 android:layout_marginTop="8dp"
-                style="@style/Widget.Material3.Button.OutlinedButton"
-                app:layout_constraintTop_toBottomOf="@id/tvDueDateLabel"
+                android:text="Select Due Date"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintTop_toBottomOf="@id/tvDueDateLabel" />
 
-            <!-- Selected Due Date Text -->
             <TextView
                 android:id="@+id/tvDueDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
                 android:text="No due date selected"
                 android:textSize="14sp"
-                app:layout_constraintTop_toBottomOf="@id/btnSelectDueDate"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="8dp" />
+                app:layout_constraintTop_toBottomOf="@id/btnSelectDueDate" />
 
-            <!-- Clear Due Date Button -->
             <Button
                 android:id="@+id/btnClearDueDate"
+                style="@style/Widget.Material3.Button.TextButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
                 android:text="Clear Due Date"
                 android:visibility="gone"
-                style="@style/Widget.Material3.Button.TextButton"
-                app:layout_constraintTop_toBottomOf="@id/tvDueDate"
                 app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="4dp" />
+                app:layout_constraintTop_toBottomOf="@id/tvDueDate" />
 
-            <!-- Bottom Buttons (Cancel + Save) -->
             <LinearLayout
                 android:id="@+id/buttonLayout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
+                android:layout_marginTop="24dp"
                 android:gravity="end"
-                app:layout_constraintTop_toBottomOf="@id/btnClearDueDate"
-                app:layout_constraintStart_toStartOf="parent"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:layout_marginTop="24dp">
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/btnClearDueDate">
 
                 <Button
                     android:id="@+id/btnCancel"
+                    style="@style/Widget.Material3.Button.OutlinedButton"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="8dp"
-                    android:text="Cancel"
-                    style="@style/Widget.Material3.Button.OutlinedButton" />
+                    android:text="Cancel" />
 
                 <Button
                     android:id="@+id/btnSave"

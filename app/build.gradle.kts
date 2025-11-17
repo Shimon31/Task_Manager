@@ -1,7 +1,8 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
-    id("com.google.devtools.ksp")
+    id("com.google.devtools.ksp") // for Room
+    id("androidx.navigation.safeargs.kotlin") // Safe Args
 }
 
 android {
@@ -34,7 +35,7 @@ android {
     kotlinOptions {
         jvmTarget = "11"
     }
-    viewBinding{
+    viewBinding {
         enable = true
     }
 }
