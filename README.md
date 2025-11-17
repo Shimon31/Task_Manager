@@ -41,6 +41,7 @@ Task Manager is an Android application built with **Kotlin** and **MVVM architec
     <td><img src="https://github.com/Shimon31/Task_Manager/blob/main/2.png?raw=true" width="200"/></td>
     <td><img src="https://github.com/Shimon31/Task_Manager/blob/main/3.png?raw=true" width="200"/></td>
     <td><img src="https://github.com/Shimon31/Task_Manager/blob/main/4.png?raw=true" width="200"/></td>
+    <td><img src="https://github.com/Shimon31/Task_Manager/blob/main/5.png?raw=true" width="200"/></td>
   </tr>
 </table>
 
