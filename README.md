@@ -30,5 +30,5 @@ Task Manager is an Android application built with **Kotlin** and **MVVM architec
 ## How to Run
 
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/YourUsername/TaskManager.git
+   
+  https://github.com/Shimon31/Task_Manager.git
