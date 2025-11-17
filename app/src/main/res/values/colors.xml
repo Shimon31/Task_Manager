@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <!-- Material 3 Colors -->
+    <color name="md_theme_light_primary">#6200EE</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#EADDFF</color>
+    <color name="md_theme_light_onPrimaryContainer">#21005D</color>
+    <color name="md_theme_light_secondary">#03DAC6</color>
+    <color name="md_theme_light_onSecondary">#000000</color>
+    <color name="md_theme_light_error">#B00020</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_background">#FFFBFE</color>
+    <color name="md_theme_light_onBackground">#1C1B1F</color>
+    <color name="md_theme_light_surface">#FFFBFE</color>
+    <color name="md_theme_light_onSurface">#1C1B1F</color>
+
+    <!-- Priority Colors -->
+    <color name="priority_high">#D32F2F</color>
+    <color name="priority_medium">#F57C00</color>
+    <color name="priority_low">#388E3C</color>
+
+    <!-- Status Colors -->
+    <color name="status_todo">#757575</color>
+    <color name="status_in_progress">#1976D2</color>
+    <color name="status_done">#388E3C</color>
+</resources>
