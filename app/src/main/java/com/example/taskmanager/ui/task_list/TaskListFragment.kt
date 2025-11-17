@@ -21,7 +21,6 @@ import com.example.taskmanager.databinding.FragmentTaskListBinding
 class TaskListFragment : Fragment() {
 
     private lateinit var binding: FragmentTaskListBinding
-
     private val viewModel: TaskListViewModel by viewModels {
         TaskListViewModelFactory((requireActivity().application as TaskApplication).repository)
     }
@@ -48,20 +47,14 @@ class TaskListFragment : Fragment() {
 
     private fun setupRecyclerView() {
         taskAdapter = TaskAdapter(
-            onTaskClick = { task ->
-                viewModel.onTaskClicked(task.id)
-            },
-            onDeleteClick = { task ->
-                viewModel.onDeleteTaskClicked(task)
-            }
+            onTaskClick = { task -> viewModel.onTaskClicked(task.id) },
+            onDeleteClick = { task -> viewModel.onDeleteTaskClicked(task) }
         )
-
         binding.recyclerViewTasks.apply {
             layoutManager = LinearLayoutManager(requireContext())
             adapter = taskAdapter
         }
     }
-
 
     private fun setupFab() {
         binding.fabAddTask.setOnClickListener {
@@ -75,18 +68,15 @@ class TaskListFragment : Fragment() {
         val menuHost: MenuHost = requireActivity()
 
         menuHost.addMenuProvider(object : MenuProvider {
-
             override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
                 menuInflater.inflate(R.menu.menu_task_list, menu)
 
+                // Setup search
                 val searchItem = menu.findItem(R.id.action_search)
                 val searchView = searchItem.actionView as SearchView
-
                 searchView.queryHint = "Search tasks..."
-
                 searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-                    override fun onQueryTextSubmit(query: String?): Boolean = false
-
+                    override fun onQueryTextSubmit(query: String?) = false
                     override fun onQueryTextChange(newText: String?): Boolean {
                         viewModel.searchTasks(newText.orEmpty())
                         return true
@@ -94,22 +84,31 @@ class TaskListFragment : Fragment() {
                 })
             }
 
-            override fun onMenuItemSelected(menuItem: MenuItem): Boolean = false
-
+            override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+                return when (menuItem.itemId) {
+                    R.id.action_sort_date -> {
+                        viewModel.setSortType(TaskListViewModel.SortType.DATE)
+                        true
+                    }
+                    R.id.action_sort_priority -> {
+                        viewModel.setSortType(TaskListViewModel.SortType.PRIORITY)
+                        true
+                    }
+                    R.id.action_sort_due_date -> {
+                        viewModel.setSortType(TaskListViewModel.SortType.DUE_DATE)
+                        true
+                    }
+                    else -> false
+                }
+            }
         }, viewLifecycleOwner, Lifecycle.State.RESUMED)
     }
 
     private fun observeViewModel() {
         viewModel.tasks.observe(viewLifecycleOwner) { tasks ->
             taskAdapter.submitList(tasks)
-
-            if (tasks.isEmpty()) {
-                binding.tvEmptyState.visibility = View.VISIBLE
-                binding.recyclerViewTasks.visibility = View.GONE
-            } else {
-                binding.tvEmptyState.visibility = View.GONE
-                binding.recyclerViewTasks.visibility = View.VISIBLE
-            }
+            binding.tvEmptyState.visibility = if (tasks.isEmpty()) View.VISIBLE else View.GONE
+            binding.recyclerViewTasks.visibility = if (tasks.isEmpty()) View.GONE else View.VISIBLE
         }
 
         viewModel.navigateToTaskDetail.observe(viewLifecycleOwner) { taskId ->
@@ -130,20 +129,16 @@ class TaskListFragment : Fragment() {
         AlertDialog.Builder(requireContext())
             .setTitle("Delete Task")
             .setMessage("Are you sure you want to delete '${task.title}'?")
-            .setPositiveButton("Delete") { _, _ ->
-                viewModel.onDeleteConfirmed(task)
-            }
-            .setNegativeButton("Cancel") { _, _ ->
-                viewModel.onDeleteCancelled()
-            }
+            .setPositiveButton("Delete") { _, _ -> viewModel.onDeleteConfirmed(task) }
+            .setNegativeButton("Cancel") { _, _ -> viewModel.onDeleteCancelled() }
             .show()
     }
 }
 
+
 class TaskListViewModelFactory(
     private val repository: com.example.taskmanager.data.repository.TaskRepository
 ) : ViewModelProvider.Factory {
-
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(TaskListViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
