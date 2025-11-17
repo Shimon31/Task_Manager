@@ -23,9 +23,7 @@ import java.util.*
 
 class TaskDetailFragment : Fragment() {
 
-    private var _binding: FragmentTaskDetailBinding? = null
-    private val binding get() = _binding!!
-
+lateinit var binding : FragmentTaskDetailBinding
     private val args: TaskDetailFragmentArgs by navArgs()
     private val viewModel: TaskDetailViewModel by viewModels {
         TaskDetailViewModelFactory((requireActivity().application as TaskApplication).repository)
@@ -39,7 +37,7 @@ class TaskDetailFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentTaskDetailBinding.inflate(inflater, container, false)
+        binding = FragmentTaskDetailBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -51,10 +49,12 @@ class TaskDetailFragment : Fragment() {
         setupButtons()
         observeViewModel()
 
-        // Fixed: get taskId from SafeArgs
         val taskId = args.taskId
         viewModel.loadTask(taskId)
 
+        binding.backBtn.setOnClickListener {
+            findNavController().navigate(R.id.action_taskDetailFragment_to_taskListFragment)
+        }
 
 
     }
@@ -155,10 +155,7 @@ class TaskDetailFragment : Fragment() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
+
 }
 
 class TaskDetailViewModelFactory(

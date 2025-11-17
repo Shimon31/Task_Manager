@@ -47,7 +47,7 @@ class TaskDetailViewModel(private val repository: TaskRepository) : ViewModel() 
 
         viewModelScope.launch {
             val currentTask = _task.value
-            val dueDateMillis = dueDate?.time  // ✅ Convert Date to Long
+            val dueDateMillis = dueDate?.time
 
             if (currentTask == null) {
                 // Create new task
